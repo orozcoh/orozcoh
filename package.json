@@ -1,0 +1,22 @@
+{
+  "name": "orozcoh",
+  "version": "0.0.1",
+  "description": "Full stack project containing the code for orozcoh.com domain",
+  "main": " ",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/orozcoh/orozcoh.git"
+  },
+  "author": "santiago.orozcoh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/orozcoh/orozcoh/issues"
+  },
+  "homepage": "https://github.com/orozcoh/orozcoh#readme",
+  "devDependencies": {
+    "concurrently": "^8.0.1"
+  }
+}
