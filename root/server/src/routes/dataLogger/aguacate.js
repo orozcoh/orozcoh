@@ -1,17 +1,7 @@
 const express = require('express')
+const aguacateData = require('../../models/aguacateData')
 
 const router = express.Router()
-
-let data = [
-  {
-    device: 'esp32',
-    time: 123,
-    light: 12,
-    temp: 50,
-    air_humidity: 90,
-    soil_humidity: 80
-  }
-]
 
 /**
  * ---------------------------------- "/"" -------------------------------------
@@ -21,15 +11,21 @@ let data = [
 router
   .route('/')
   .get((req, res) => {
-    res.send(JSON.stringify(data))
+    aguacateData
+      .getLastItem()
+      .then((lastData) => res.send(lastData))
+      .catch((error) => res.status(500).send(error))
   })
   .post((req, res) => {
-    try {
-      data.push(req.body)
-      res.send(data[data.length - 1])
-    } catch {
-      res.status(500).send('something went wrong')
-    }
+    const newData = new aguacateData(req.body)
+    newData
+      .postItem()
+      .then((savedItem) => {
+        res.send(`Item posted: ${savedItem}`)
+      })
+      .catch((error) => {
+        res.status(500).send(error)
+      })
   })
 
 /**
@@ -37,15 +33,21 @@ router
  *
  *  - GET: Array of items within the range of {startTime} and {endTime} params
  */
-router.route('/data').get((req, res) => {
-  const startTime = req.query.startTime
-  const endTime = req.query.endTime
-  if (startTime && endTime) {
-    res.send(`Getting data from: ${startTime} until ${endTime}`)
-  } else {
-    res.status(404).send('Item not found')
-  }
-})
+router
+  .route('/data')
+
+  .get((req, res) => {
+    const startTime = parseInt(req.query.startTime)
+    const endTime = parseInt(req.query.endTime)
+    aguacateData
+      .getRangeOfItems(startTime, endTime)
+      .then((items) =>
+        items.length > 0
+          ? res.send(items)
+          : res.status(404).send('There is not data between the dates provided')
+      )
+      .catch(() => res.status(500).send('Error while finding data'))
+  })
 
 /**
  * ---------------------------- "/data/:timestamp" -----------------------------
@@ -56,54 +58,46 @@ router.route('/data').get((req, res) => {
  */
 router
   .route('/data/:timestamp')
-  .get(validateMiddleware, (req, res) => {
-    if (req.validTime) {
-      res.send(
-        `Getting data from: ${req.params.timestamp} is:\n\n${JSON.stringify(
-          req.validTime
-        )}`
-      )
-    } else {
-      res.status(404).send('Item not found')
-    }
+
+  .get((req, res) => {
+    aguacateData
+      .getOneItem(req.timestamp)
+      .then((item) => (item ? res.send(item) : res.send('Item not found')))
+      .catch(() => res.status(500).send('Error finding item'))
   })
+
   .put((req, res) => {
-    if (req.validTime) {
-      res.send(
-        `Updating data from: ${req.params.timestamp} is:\n\n${JSON.stringify(
-          req.validTime
-        )}`
+    aguacateData
+      .updateOneItem(req.timestamp, req.body)
+      .then((item) =>
+        item
+          ? res.send(`Item updated: ${item}`)
+          : res.status(404).send('Item not found to update')
       )
-    } else {
-      res.status(404).send('Item not found')
-    }
+      .catch(() => res.status(500).send('Error while updating item'))
   })
+
   .delete((req, res) => {
-    if (req.validTime) {
-      res.send(
-        `Deleting data from: ${req.params.timestamp} is:\n\n${JSON.stringify(
-          req.validTime
-        )}`
-      )
-    } else {
-      res.status(404).send('Item not found')
-    }
+    aguacateData
+      .deleteItem(req.timestamp)
+      .then((delData) => res.send(`Deleted data was:\n\n${delData}`))
+      .catch((error) => {
+        res.status(500).send(`Error deleting item: ${error}`)
+      })
   })
 
 //---------------------- Middleware and parameters setting ----------------------
 
 router.param('timestamp', (req, res, next) => {
-  console.log('validating timestamp....')
   const time = parseInt(req.params.timestamp)
-  const resData = data.find((item) => item.time === time)
-  req.validTime = resData
+  req.timestamp = time
   next()
 })
 
-function validateMiddleware(req, res, next) {
+/* function validateMiddleware(req, res, next) {
   console.log('Getting data by timestamp')
   next()
-}
+} */
 
 //-------------------------------------------------------------------------------
 
