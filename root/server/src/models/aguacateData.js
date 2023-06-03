@@ -76,7 +76,7 @@ aguacateDataSchema.statics.getRangeOfItems = async function (
     const itemArray = await this.find({
       unix_time: {
         $gte: startTime,
-        $lt: endTime
+        $lt: endTime + 1
       }
     }).exec()
     return itemArray
