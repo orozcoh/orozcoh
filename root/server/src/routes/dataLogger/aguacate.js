@@ -4,9 +4,10 @@ const aguacateData = require('../../models/aguacateData')
 const router = express.Router()
 
 /**
- * ---------------------------------- "/"" -------------------------------------
+ * ---------------------------------- "/" --------------------------------------
  *  - GET: last item posted
  *  - POST: new item
+ * -----------------------------------------------------------------------------
  */
 router
   .route('/')
@@ -32,6 +33,7 @@ router
  * --------------------------------- "/data" -----------------------------------
  *
  *  - GET: Array of items within the range of {startTime} and {endTime} params
+ * -----------------------------------------------------------------------------
  */
 router
   .route('/data')
@@ -44,9 +46,77 @@ router
       .then((items) =>
         items.length > 0
           ? res.send(items)
-          : res.status(404).send('There is not data between the dates provided')
+          : res.status(404).send('There is no data between the dates provided')
       )
       .catch(() => res.status(500).send('Error while finding data'))
+  })
+
+/**
+ * --------------------------- "/data/last/:nhours/hours" -----------------------
+ *
+ *  - GET: Array of items of the last {nhours}
+ *  - limit {nhours} to 48 hours
+ * ------------------------------------------------------------------------------
+ */
+router
+  .route('/data/last/:nhours/hours')
+
+  .get(async (req, res) => {
+    const nhours = req.nhours < 48 ? req.nhours : 1
+    const nhours_unix_time = nhours * 3600
+
+    const lastItem = await aguacateData
+      .getLastItem()
+      .catch(() => console.log('Error while getting the last item'))
+
+    const startTime = lastItem['unix_time'] - nhours_unix_time
+    const endTime = lastItem['unix_time']
+
+    aguacateData
+      .getRangeOfItems(startTime, endTime)
+      .then((items) =>
+        items.length > 0
+          ? res.send(items)
+          : res.status(404).send(`There is no data in the last ${nhours} hours`)
+      )
+      .catch(() => res.status(500).send('Error while finding data'))
+
+    console.log('nhours:', nhours)
+    console.log('between: ', startTime, ' and: ', endTime, ' hours')
+  })
+
+/**
+ * --------------------------- "/data/last/:ndays/days" -----------------------
+ *
+ *  - GET: Array of items of the last {nhours}
+ *  - limit {nhours} to 48 hours
+ * ----------------------------------------------------------------------------
+ */
+router
+  .route('/data/last/:ndays/days')
+
+  .get(async (req, res) => {
+    const ndays = req.ndays <= 31 ? req.ndays : 1
+    const ndays_unix_time = ndays * 3600 * 24
+
+    const lastItem = await aguacateData
+      .getLastItem()
+      .catch(() => console.log('Error while getting the last item'))
+
+    const startTime = lastItem['unix_time'] - ndays_unix_time
+    const endTime = lastItem['unix_time']
+
+    aguacateData
+      .getRangeOfItems(startTime, endTime)
+      .then((items) =>
+        items.length > 0
+          ? res.send(items)
+          : res.status(404).send(`There is no data in the last ${ndays} days`)
+      )
+      .catch(() => res.status(500).send('Error while finding data'))
+
+    console.log('ndays:', ndays)
+    console.log('between: ', startTime, ' and: ', endTime, ' hours')
   })
 
 /**
@@ -55,6 +125,7 @@ router
  *  - GET: {timestamp} item -> should get closest item round to lower
  *  - DELETE: {timestamp} item -> needs exact timestamp
  *  - PUT: Update {timestamp} item -> needs exact timestamp
+ * -----------------------------------------------------------------------------
  */
 router
   .route('/data/:timestamp')
@@ -86,11 +157,25 @@ router
       })
   })
 
+//-------------------------------------------------------------------------------
 //---------------------- Middleware and parameters setting ----------------------
+//-------------------------------------------------------------------------------
 
 router.param('timestamp', (req, res, next) => {
   const time = parseInt(req.params.timestamp)
   req.timestamp = time
+  next()
+})
+
+router.param('nhours', (req, res, next) => {
+  const nhours = parseInt(req.params.nhours)
+  req.nhours = nhours
+  next()
+})
+
+router.param('ndays', (req, res, next) => {
+  const ndays = parseInt(req.params.ndays)
+  req.nhours = ndays
   next()
 })
 
