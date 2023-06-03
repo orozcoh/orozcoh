@@ -1,4 +1,5 @@
 const express = require('express')
+const { format } = require('date-fns')
 const aguacateData = require('../../models/aguacateData')
 
 const router = express.Router()
@@ -52,6 +53,26 @@ router
   })
 
 /**
+ * ---------------------------- "/data/latest-timestamp" ------------------------
+ *
+ *  - GET: String with the date of last item posted formated to "DD/MM/YY HH:mm"
+ * -----------------------------------------------------------------------------
+ */
+router
+  .route('/data/latest-timestamp')
+
+  .get((req, res) => {
+    aguacateData
+      .getLastItem()
+      .then((lastItem) => {
+        const date = new Date(lastItem['unix_time'] * 1000)
+        const formattedDate = format(date, 'MMM dd, yyyy - HH:mm:ss')
+        res.send({ date: formattedDate })
+      })
+      .catch(() => res.status(500).send('Error while getting the last item'))
+  })
+
+/**
  * --------------------------- "/data/last/:nhours/hours" -----------------------
  *
  *  - GET: Array of items of the last {nhours}
@@ -80,9 +101,6 @@ router
           : res.status(404).send(`There is no data in the last ${nhours} hours`)
       )
       .catch(() => res.status(500).send('Error while finding data'))
-
-    console.log('nhours:', nhours)
-    console.log('between: ', startTime, ' and: ', endTime, ' hours')
   })
 
 /**
@@ -114,9 +132,6 @@ router
           : res.status(404).send(`There is no data in the last ${ndays} days`)
       )
       .catch(() => res.status(500).send('Error while finding data'))
-
-    console.log('ndays:', ndays)
-    console.log('between: ', startTime, ' and: ', endTime, ' hours')
   })
 
 /**
