@@ -1,3 +1,8 @@
+//Get network interfaces and IPs
+//const { networkInterfaces } = require('os')
+//const nets = networkInterfaces()
+//console.log('Connected IP:', nets['en0'][1]['address'])
+
 const express = require('express')
 const { format } = require('date-fns')
 const aguacateData = require('../../models/aguacateData')
