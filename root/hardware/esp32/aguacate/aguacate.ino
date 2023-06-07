@@ -28,7 +28,7 @@ const char* SSID        = "__SSID__";
 const char* PASSWORD    = "__PASSWORD__";
 
 // local API
-const char* LOCAL_API   = "http://192.168.1.2:3000/dataLogger/aguacate";
+const char* LOCAL_API   = "http://192.168.1.200:3000/dataLogger/aguacate";
 
 // cloud API
 const char* CLOUD_API   = "http://<CLOUD_URL>:4000/v1/data";
