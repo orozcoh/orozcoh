@@ -34,7 +34,7 @@ const char* LOCAL_API   = "http://192.168.1.200:3000/dataLogger/aguacate";
 const char* CLOUD_API   = "http://<CLOUD_URL>:4000/v1/data";
 
 const String DEVICE_ID  = "esp32-aguacate";
-const String API_KEY    = "test1";
+const String API_KEY    = "__API-KEY__";
 // ------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------
 
@@ -107,7 +107,7 @@ void setup(){
 
 void loop(){
 
-  DynamicJsonDocument bodyJson(256);
+  DynamicJsonDocument bodyJson(300);
   String bodyString;
 
   Serial.println("\nPreparing new data...");
@@ -140,12 +140,14 @@ void loop(){
    if(WiFi.status()== WL_CONNECTED ){ 
       //answer = getRequest(local_API);
 
-      bodyJson["device_name"] = DEVICE_ID;
-      bodyJson["unix_time"] = rtc.now().unixtime();
-      bodyJson["light"] = String(light, 3);
-      bodyJson["temp"] = String(temp, 3);
-      bodyJson["air_humidity"] = String(air_humidity, 3);
-      bodyJson["soil_humidity"] = 0;
+      bodyJson["api_key"] = API_KEY;
+      JsonObject data = bodyJson.createNestedObject("data");
+      data["device_name"] = DEVICE_ID;
+      data["unix_time"] = rtc.now().unixtime();
+      data["light"] = String(light, 3);
+      data["temp"] = String(temp, 3);
+      data["air_humidity"] = String(air_humidity, 3);
+      data["soil_humidity"] = 0;
 
       serializeJson(bodyJson, bodyString);
 
