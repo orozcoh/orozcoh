@@ -6,6 +6,10 @@
 const express = require('express')
 const { format } = require('date-fns')
 const aguacateData = require('../../models/aguacateData')
+const process = require('process')
+require('dotenv').config()
+
+const keys = process.env.DEVICES_API_KEYS.split('\n')
 
 const router = express.Router()
 
@@ -23,16 +27,20 @@ router
       .then((lastData) => res.send(lastData))
       .catch((error) => res.status(500).send(error))
   })
-  .post((req, res) => {
-    const newData = new aguacateData(req.body)
-    newData
-      .postItem()
-      .then((savedItem) => {
-        res.send(`Item posted: ${savedItem}`)
-      })
-      .catch((error) => {
-        res.status(500).send(error)
-      })
+  .post(validateDeviceApiKey, (req, res) => {
+    if (req.isDeviceKeyValid) {
+      const newData = new aguacateData(req.body['data'])
+      newData
+        .postItem()
+        .then((savedItem) => {
+          res.send(`Item posted: ${savedItem}`)
+        })
+        .catch((error) => {
+          res.status(500).send(error)
+        })
+    } else {
+      res.status(403).send(`You don't have permission to access this resource`)
+    }
   })
 
 /**
@@ -199,10 +207,15 @@ router.param('ndays', (req, res, next) => {
   next()
 })
 
-/* function validateMiddleware(req, res, next) {
-  console.log('Getting data by timestamp')
+function validateDeviceApiKey(req, res, next) {
+  const api_key = req.body['api_key']
+  let isDeviceKeyValid = false
+  if (keys.includes(api_key)) {
+    isDeviceKeyValid = true
+  }
+  req.isDeviceKeyValid = isDeviceKeyValid
   next()
-} */
+}
 
 //-------------------------------------------------------------------------------
 
