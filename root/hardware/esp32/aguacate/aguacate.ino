@@ -28,7 +28,7 @@ const char* SSID        = "__SSID__";
 const char* PASSWORD    = "__PASSWORD__";
 
 // local API
-const char* LOCAL_API   = "http://192.168.1.2:3000/dataLogger/aguacate";
+const char* LOCAL_API   = "http://192.168.1.200:3000/dataLogger/aguacate";
 
 // cloud API
 const char* CLOUD_API   = "http://<CLOUD_URL>:4000/v1/data";
@@ -46,7 +46,7 @@ String answer;
 String answer_post;
 String body;
 
-DynamicJsonDocument bodyJson(256);
+//DynamicJsonDocument bodyJson(256);
 
 const int measureInterval = 60 * 5;  // 600s = 10min
 
@@ -78,7 +78,7 @@ void setup(){
     }
 
     if (!veml.begin()) {
-      Serial.println("Sensor not found");
+      Serial.println("VEML - Sensor not found");
       while (1);
     }
     Serial.println("VEML - Sensor found");
@@ -93,10 +93,10 @@ void setup(){
 //      location_data = getRequest(location_api.c_str());
 //      Serial.println("Location: " + location_data);
 //    }
-   
     dht.begin();
+    Serial.println("DHT - Sensor found");
 
-
+    Serial.println("------ SETUP FINISH ------");
 //    DateTime dt(__DATE__, __TIME__);
 //    rtc.adjust(dt);
 
@@ -106,13 +106,19 @@ void setup(){
 } // EOF setup
 
 void loop(){
-  delay(1500);
+
+  DynamicJsonDocument bodyJson(256);
+  String bodyString;
+
+  Serial.println("\nPreparing new data...");
   int nowR = rtc.now().unixtime();
   int nowT = nowR + measureInterval; //measureInterval
-  Serial.println(nowT);
+  //Serial.print("unix_time now: ");
+  //Serial.println(nowT);
   light = veml.readLux();
   //volt = (3.3/4095) * light;
-  Serial.println(light);
+  //Serial.print("light: ");
+  //Serial.println(light);
 
   float air_humidity = dht.readHumidity();
 
@@ -123,7 +129,7 @@ void loop(){
 
   // Check if any reads failed and exit early (to try again).
   if (isnan(air_humidity) || isnan(temp)) {
-    Serial.println(F("Failed to read from DHT sensor!"));
+    Serial.println(F("\nFailed to read from DHT sensor!"));
     esp_sleep_enable_timer_wakeup(10 * uS_TO_S_FACTOR);
     esp_deep_sleep_start();
     return;
@@ -141,15 +147,12 @@ void loop(){
       bodyJson["air_humidity"] = String(air_humidity, 3);
       bodyJson["soil_humidity"] = 0;
 
-      String bodyString;
       serializeJson(bodyJson, bodyString);
 
       Serial.print("DATA:");
-      Serial.print(bodyString);
+      Serial.println(bodyString);
 
       answer_post = Post(LOCAL_API, bodyString);
-      Serial.println("\nRespuesta de dataLogger_API");
-      Serial.println(answer_post);
       //count++;
       //bootCount++;
     }
@@ -175,7 +178,7 @@ String getRequest(const char* serverName) {
   String payload = "..."; 
   
   if (httpResponseCode > 0) {
-    Serial.print("HTTP Response code: ");
+    Serial.print("\nHTTP Response code: ");
     Serial.println(httpResponseCode);
     payload = http.getString();
   }
