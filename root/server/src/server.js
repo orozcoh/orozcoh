@@ -1,4 +1,6 @@
 const process = require('process')
+const cors = require('cors')
+
 require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
@@ -23,6 +25,13 @@ mongoose
 
 const app = express()
 
+/* const corsOptions = {
+  origin: 'https://example.com' // Replace with your desired domain
+}; */
+
+//app.use(cors(corsOptions));
+
+app.use(cors())
 app.use(express.json())
 app.use('/', rootRouter)
 app.use('/dataLogger/aguacate', aguacateRouter)
