@@ -203,7 +203,7 @@ router.param('nhours', (req, res, next) => {
 
 router.param('ndays', (req, res, next) => {
   const ndays = parseInt(req.params.ndays)
-  req.nhours = ndays
+  req.ndays = ndays
   next()
 })
 
