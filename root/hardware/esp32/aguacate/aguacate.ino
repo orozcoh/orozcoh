@@ -31,7 +31,7 @@ const char* PASSWORD    = "__PASSWORD__";
 const char* LOCAL_API   = "http://192.168.1.200:3000/dataLogger/aguacate";
 
 // cloud API
-const char* CLOUD_API   = "http://<CLOUD_URL>:4000/v1/data";
+const char* CLOUD_API   = "http://api2.orozcoh.com/dataLogger/aguacate";
 
 const String DEVICE_ID  = "esp32-aguacate";
 const String API_KEY    = "__API-KEY__";
@@ -154,7 +154,7 @@ void loop(){
       Serial.print("DATA:");
       Serial.println(bodyString);
 
-      answer_post = Post(LOCAL_API, bodyString);
+      answer_post = Post(CLOUD_API, bodyString);
       //count++;
       //bootCount++;
     }
