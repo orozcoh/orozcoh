@@ -6,6 +6,7 @@ export const Header = ({ colorTheme, setColorTheme }) => {
   return (
     <Navbar
       //collapseOnSelect
+      className="sticky-top"
       expand="sm"
       bg={colorTheme || "dark"}
       variant={colorTheme || "dark"}
@@ -18,7 +19,7 @@ export const Header = ({ colorTheme, setColorTheme }) => {
         >
           <img
             alt="favicon"
-            src="src/assets/favicon.ico"
+            src="/src/assets/favicon.ico"
             width="30"
             height="30"
             className="d-inline-block align-top"
@@ -47,7 +48,7 @@ export const Header = ({ colorTheme, setColorTheme }) => {
                 className=""
                 //style={{ marginLeft: "10px", marginRight: "10px" }}
                 alt="keplr_logo"
-                src="src/assets/keplr_logo.png"
+                src="/src/assets/keplr_logo.png"
                 width="30"
                 height="30"
                 //className="d-inline-block align-top"

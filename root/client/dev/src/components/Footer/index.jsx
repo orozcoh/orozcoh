@@ -3,7 +3,6 @@ import { Container, Navbar, Nav } from "react-bootstrap";
 //import "./style.scss";
 
 export const Footer = ({ colorTheme }) => {
-  console.log("Color:", colorTheme);
   return (
     <div className="Footer-wrap footer mt-auto py-3">
       <Navbar
