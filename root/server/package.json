@@ -4,7 +4,8 @@
   "description": "",
   "main": "./src/server.js",
   "scripts": {
-    "start:dev": "nodemon ./src/server.js",
+    "dev": "nodemon ./src/server.js",
+    "start": "./src/server.js",
     "lint": "eslint ./src --ext .js"
   },
   "keywords": [],
