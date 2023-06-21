@@ -6,7 +6,7 @@
 
 ---
 # Indicates version of Akash configuration file. Currently only "2.0" is accepted.
-version: "2.0"
+version: '2.0'
 
 # The top-level services entry contains a map of workloads to be ran on the Akash deployment. Each key is a service name; values are a map containing the following keys:
 # https://docs.akash.network/intro-to-akash/stack-definition-language#services
@@ -14,13 +14,20 @@ services:
   # The name of the service "web"
   web:
     # The docker container image with version. You must specify a version, the "latest" tag doesn't work.
-    image: devorozcoh/dev-front:0.3
+    image: devorozcoh/api2:0.1
+    # ENV Variables
+    env:
+      - DB_HOST=<DB_HOST>
+      - DB_NAME=<DB_NAME>
+      - DB_USER=<DB_USER>
+      - DB_PASSWORD=<DB_PASSWORD>
+      - DEVICES_API_KEYS=<DEVICE_API_KEYS>
     # You can map ports here https://docs.akash.network/intro-to-akash/stack-definition-language#services.expose
     expose:
-      - port: 80
+      - port: 3000
         as: 80
         accept:
-          - "dev.orozcoh.com"
+          - 'api2.orozcoh.com'
         to:
           - global: true
 
@@ -34,9 +41,9 @@ profiles:
     web:
       resources:
         cpu:
-          units: 0.5
+          units: 0.3
         memory:
-          size: 512Mi
+          size: 256Mi
         storage:
           size: 512Mi
 

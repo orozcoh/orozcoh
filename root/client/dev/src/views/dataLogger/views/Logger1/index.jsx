@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 //import { useEffect, useRef } from "react";
 import axios from "axios";
-//import moment from "moment";
+import moment from "moment";
 import { LoggerNavBar } from "../../components/LoggerNavBar";
 import { LineGraph } from "../../components/LineGraph";
 
@@ -15,9 +15,9 @@ export default LineGraph;
 
 // ---------------------------- IP Endpoint config ------------------------------
 
-const URL_ROOT = "192.168.1.200:3000"; // Local - Raspberry
+//const URL_ROOT = "192.168.1.200:3000"; // Local - Raspberry
 //const URL_ROOT = "192.168.1.2:3000"       // Local - PC
-//const URL_ROOT = "api2.orozcoh.com:3000" //cloud production
+const URL_ROOT = "api2.orozcoh.com"; //cloud production
 
 // -------------------------------------------------------------------------------
 
@@ -67,7 +67,14 @@ export const Logger1 = ({ colorTheme }) => {
     axios
       .get(`http://${URL_ROOT}/dataLogger/aguacate/data/latest-timestamp`)
       .then((response) => {
-        setLastUpdate(response.data);
+        // ---- Need to fix to time zone based on browser HARDCODED TO UTC -5 -------
+        //const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const tempDate = moment(response.data.date, "MMM DD, YYYY - HH:mm:ss")
+          .subtract(5, "hour")
+          .format("MMM DD, YY - HH:mm:ss");
+        let dat = response.data;
+        dat.date = tempDate;
+        setLastUpdate(dat);
       })
       .catch((error) => {
         // Handle any errors
