@@ -13,6 +13,14 @@ import { useEffect, useRef, useState } from "react";
 
 export default LineGraph;
 
+// ---------------------------- IP Endpoint config ------------------------------
+
+const URL_ROOT = "192.168.1.200:3000"; // Local - Raspberry
+//const URL_ROOT = "192.168.1.2:3000"       // Local - PC
+//const URL_ROOT = "api2.orozcoh.com:3000" //cloud production
+
+// -------------------------------------------------------------------------------
+
 export const Logger1 = ({ colorTheme }) => {
   const dataReal = useRef([]);
   //const [updateCount, setUpdateCount] = useState(0);
@@ -22,7 +30,7 @@ export const Logger1 = ({ colorTheme }) => {
 
   useEffect(() => {
     axios
-      .get("http://192.168.1.2:3000/dataLogger/aguacate/data/last/3/days")
+      .get(`http://${URL_ROOT}/dataLogger/aguacate/data/last/3/days`)
       .then((response) => {
         // Handle the response data
         let data = [
@@ -57,7 +65,7 @@ export const Logger1 = ({ colorTheme }) => {
       });
 
     axios
-      .get("http://192.168.1.2:3000/dataLogger/aguacate/data/latest-timestamp")
+      .get(`http://${URL_ROOT}/dataLogger/aguacate/data/latest-timestamp`)
       .then((response) => {
         setLastUpdate(response.data);
       })
