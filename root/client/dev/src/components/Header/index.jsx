@@ -19,7 +19,7 @@ export const Header = ({ colorTheme, setColorTheme }) => {
         >
           <img
             alt="favicon"
-            src="/src/assets/favicon.ico"
+            src="/img/favicon.ico"
             width="30"
             height="30"
             className="d-inline-block align-top"
@@ -48,7 +48,7 @@ export const Header = ({ colorTheme, setColorTheme }) => {
                 className=""
                 //style={{ marginLeft: "10px", marginRight: "10px" }}
                 alt="keplr_logo"
-                src="/src/assets/keplr_logo.png"
+                src="/img/keplr_logo.png"
                 width="30"
                 height="30"
                 //className="d-inline-block align-top"

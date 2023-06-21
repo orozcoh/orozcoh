@@ -9,6 +9,8 @@ mongoose.pluralize(null)
 const aguacateRouter = require('./routes/dataLogger/aguacate')
 const rootRouter = require('./routes/root')
 
+console.log('Running server...')
+
 // Connect to MongoDB cluster
 mongoose
   .connect(process.env.DB_HOST, {

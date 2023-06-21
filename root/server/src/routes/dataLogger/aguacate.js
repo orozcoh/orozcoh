@@ -9,7 +9,9 @@ const aguacateData = require('../../models/aguacateData')
 const process = require('process')
 require('dotenv').config()
 
-const keys = process.env.DEVICES_API_KEYS.split('\n')
+const keys = process.env.DEVICES_API_KEYS
+  ? process.env.DEVICES_API_KEYS.split(' ')
+  : 'NO ENV VARIABLES FOUND'
 
 const router = express.Router()
 
