@@ -17,7 +17,7 @@ function App() {
           display: "flex",
           flexDirection: "column",
           //alignItems: "center",
-          minHeight: "96vh",
+          minHeight: "calc(100vh - 56px)",
         }}
       >
         <Header colorTheme={colorTheme} setColorTheme={setColorTheme} />

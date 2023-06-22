@@ -21,7 +21,7 @@ export const LineGraph = ({ data }) => {
     var tickDistance = Math.floor(TICK_WIDTH / gridWidth);
 
     const values = xValues.filter((_, i) => i % tickDistance === 0);
-    const realV = values.slice(0, values.length / 2);
+    const realV = values.slice(0, values.length);
 
     return {
       tickValues: tickDistance === 0 ? xValues : realV,
@@ -30,6 +30,8 @@ export const LineGraph = ({ data }) => {
 
   const ticksNumber = getTickValues().tickValues;
 
+  console.log("data0", data[0] && data[0].id);
+
   return (
     data && (
       <div style={{ width: "100%", height: "400px" }}>
@@ -37,15 +39,15 @@ export const LineGraph = ({ data }) => {
           data={data}
           enableGridX={true}
           enableGridY={true}
-          curve="monotoneX"
+          //curve="monotoneX"
           margin={{ top: 20, right: 60, bottom: 100, left: 60 }}
           initialDimensions={{ width: 800, height: 400 }}
           //xFormat={(value) => value}
           xScale={{ type: "time" }} // Use 'point' type for discrete values
           yScale={{
             type: "linear",
-            min: 0,
-            max: 500,
+            min: "auto",
+            max: "auto",
             stacked: true,
             reverse: false,
           }}
@@ -53,14 +55,7 @@ export const LineGraph = ({ data }) => {
           yFormat=" >-.2f"
           axisTop={null}
           axisRight={{
-            min: 0,
-            max: 50,
             tickSize: 5,
-            legend: "Temperature (ºC)",
-            legendOffset: 40,
-            legendPosition: "middle",
-
-            stacked: false,
           }}
           axisBottom={{
             tickSize: 10,
@@ -80,23 +75,23 @@ export const LineGraph = ({ data }) => {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: "Light (?)",
-            legendOffset: -40,
+            legend: data[0] && data[0].id,
+            legendOffset: -45,
             legendPosition: "middle",
           }}
-          axisLeft2={{
+          /*           axisLeft2={{
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
             legend: "Temperature",
             legendOffset: -40,
             legendPosition: "middle",
-          }}
+          }} */
           enablePoints={false}
           pointSize={1}
-          pointColor={{ theme: "background" }}
+          //pointColor={{ theme: "background" }}
           pointBorderWidth={2}
-          pointBorderColor={{ from: "serieColor" }}
+          //pointBorderColor={{ from: "serieColor" }}
           pointLabelYOffset={-12}
           useMesh={true}
           legends={[
@@ -113,7 +108,7 @@ export const LineGraph = ({ data }) => {
               itemOpacity: 0.75,
               symbolSize: 12,
               symbolShape: "circle",
-              symbolBorderColor: "rgba(0, 0, 0, .5)",
+              //symbolBorderColor: "rgba(0, 0, 0, .5)",
               effects: [
                 {
                   on: "hover",

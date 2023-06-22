@@ -25,6 +25,7 @@ export const Logger1 = ({ colorTheme }) => {
   const dataReal = useRef([]);
   //const [updateCount, setUpdateCount] = useState(0);
   const [dataGraph, setDataGraph] = useState([]);
+  const [dataGraph2, setDataGraph2] = useState([]);
   const [lastItem, setLastItem] = useState(0);
   const [lastUpdate, setLastUpdate] = useState(0);
 
@@ -35,12 +36,12 @@ export const Logger1 = ({ colorTheme }) => {
         // Handle the response data
         let data = [
           {
-            id: "Light",
-            color: "hsl(352, 70%, 50%)",
+            id: "Light (Lux)",
+            //color: "hsl(352, 70%, 50%)",
           },
           {
-            id: "Temperature",
-            color: "rgb(250, 70, 250)",
+            id: "Temperature (ºC)",
+            //color: "rgb(250, 70, 250)",
           },
         ];
         setLastItem(response.data[response.data.length - 1]);
@@ -57,7 +58,8 @@ export const Logger1 = ({ colorTheme }) => {
         }));
         //data[1].data = tempRef.current;
         dataReal.current = data;
-        setDataGraph(data);
+        setDataGraph([data[0]]);
+        setDataGraph2([data[1]]);
       })
       .catch((error) => {
         // Handle any errors
@@ -101,20 +103,20 @@ export const Logger1 = ({ colorTheme }) => {
       >
         <div
           style={{
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "column-reverse",
-            justifyContent: "space-evenly",
             marginTop: "20px",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <h2>Time vs Light and Temperature</h2>
-          </div>
+          <h2>Time vs Light</h2>
         </div>
-
         <LineGraph data={dataGraph} />
+
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <h2>Time vs Temperature</h2>
+        </div>
+        <LineGraph data={dataGraph2} />
+
         {/*         <button onClick={() => setUpdateCount(updateCount + 1)}>
           Update data
         </button> */}
