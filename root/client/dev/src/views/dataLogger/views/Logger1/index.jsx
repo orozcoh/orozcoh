@@ -141,8 +141,6 @@ export const Logger1 = ({ colorTheme }) => {
           </div>
         </div>
       </div>
-      {/* Footer Spacer */}
-      <div style={{ width: "50px", height: "56px" }}> </div>
     </>
   );
 };

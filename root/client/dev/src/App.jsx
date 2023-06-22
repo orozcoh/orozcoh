@@ -12,25 +12,32 @@ function App() {
   const [colorTheme, setColorTheme] = useState("dark");
   return (
     <>
-      <Header colorTheme={colorTheme} setColorTheme={setColorTheme} />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          //alignItems: "center",
+          minHeight: "96vh",
+        }}
+      >
+        <Header colorTheme={colorTheme} setColorTheme={setColorTheme} />
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route
+              path="/dataLogger"
+              element={<LoggerHome colorTheme={colorTheme} />}
+            />
+            <Route
+              path="/dataLogger/logger1"
+              element={<Logger1 colorTheme={colorTheme} />}
+            />
 
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route
-            path="/dataLogger"
-            element={<LoggerHome colorTheme={colorTheme} />}
-          />
-          <Route
-            path="/dataLogger/logger1"
-            element={<Logger1 colorTheme={colorTheme} />}
-          />
-
-          {/* Add other routes */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
-
+            {/* Add other routes */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Router>
+      </div>
       <Footer colorTheme={colorTheme} />
     </>
   );
