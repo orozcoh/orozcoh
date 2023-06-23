@@ -10,12 +10,9 @@ const CustomTooltip = ({ point }) => {
         padding: "9px 12px",
         border: "1px solid #ccc",
       }}
-      onClick={() => {
-        console.log("copying...");
-      }}
     >
       <div>
-        <b>unix_time:</b>
+        <b>unix_time: </b>
         {moment(point.data.x).valueOf() / 1000}
       </div>
       <div>
@@ -55,8 +52,6 @@ export const LineGraph = ({ data }) => {
   };
 
   const ticksNumber = getTickValues().tickValues;
-
-  console.log("data0", data[0] && data[0].id);
 
   return (
     data && (
