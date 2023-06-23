@@ -2,6 +2,29 @@ import PropTypes from "prop-types";
 import { ResponsiveLine } from "@nivo/line";
 import moment from "moment";
 
+const CustomTooltip = ({ point }) => {
+  return (
+    <div
+      style={{
+        background: "white",
+        padding: "9px 12px",
+        border: "1px solid #ccc",
+      }}
+    >
+      <div>
+        <b>unix_time: </b>
+        {moment(point.data.x).valueOf() / 1000}
+      </div>
+      <div>
+        <b>Date:</b> {moment(point.data.x).format("MMM DD, HH:mm:ss")}
+      </div>
+      <div>
+        <b>{point.serieId}</b>: {point.data.y}
+      </div>
+    </div>
+  );
+};
+
 export const LineGraph = ({ data }) => {
   var windowWidth =
     window.innerWidth ||
@@ -21,7 +44,7 @@ export const LineGraph = ({ data }) => {
     var tickDistance = Math.floor(TICK_WIDTH / gridWidth);
 
     const values = xValues.filter((_, i) => i % tickDistance === 0);
-    const realV = values.slice(0, values.length / 2);
+    const realV = values.slice(0, values.length);
 
     return {
       tickValues: tickDistance === 0 ? xValues : realV,
@@ -35,17 +58,18 @@ export const LineGraph = ({ data }) => {
       <div style={{ width: "100%", height: "400px" }}>
         <ResponsiveLine
           data={data}
+          tooltip={(point) => CustomTooltip(point)}
           enableGridX={true}
           enableGridY={true}
-          curve="monotoneX"
+          //curve="monotoneX"
           margin={{ top: 20, right: 60, bottom: 100, left: 60 }}
           initialDimensions={{ width: 800, height: 400 }}
           //xFormat={(value) => value}
           xScale={{ type: "time" }} // Use 'point' type for discrete values
           yScale={{
             type: "linear",
-            min: 0,
-            max: 500,
+            min: "auto",
+            max: "auto",
             stacked: true,
             reverse: false,
           }}
@@ -53,14 +77,7 @@ export const LineGraph = ({ data }) => {
           yFormat=" >-.2f"
           axisTop={null}
           axisRight={{
-            min: 0,
-            max: 50,
             tickSize: 5,
-            legend: "Temperature (ºC)",
-            legendOffset: 40,
-            legendPosition: "middle",
-
-            stacked: false,
           }}
           axisBottom={{
             tickSize: 10,
@@ -80,23 +97,23 @@ export const LineGraph = ({ data }) => {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: "Light (?)",
-            legendOffset: -40,
+            legend: data[0] && data[0].id,
+            legendOffset: -45,
             legendPosition: "middle",
           }}
-          axisLeft2={{
+          /*           axisLeft2={{
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
             legend: "Temperature",
             legendOffset: -40,
             legendPosition: "middle",
-          }}
+          }} */
           enablePoints={false}
           pointSize={1}
-          pointColor={{ theme: "background" }}
+          //pointColor={{ theme: "background" }}
           pointBorderWidth={2}
-          pointBorderColor={{ from: "serieColor" }}
+          //pointBorderColor={{ from: "serieColor" }}
           pointLabelYOffset={-12}
           useMesh={true}
           legends={[
@@ -113,7 +130,7 @@ export const LineGraph = ({ data }) => {
               itemOpacity: 0.75,
               symbolSize: 12,
               symbolShape: "circle",
-              symbolBorderColor: "rgba(0, 0, 0, .5)",
+              //symbolBorderColor: "rgba(0, 0, 0, .5)",
               effects: [
                 {
                   on: "hover",
@@ -142,4 +159,8 @@ export const LineGraph = ({ data }) => {
 
 LineGraph.propTypes = {
   data: PropTypes.array,
+};
+
+CustomTooltip.propTypes = {
+  point: PropTypes.object,
 };

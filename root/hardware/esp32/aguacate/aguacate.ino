@@ -86,8 +86,8 @@ void setup(){
     }
     Serial.println("VEML - Sensor found");
 
-    veml.setGain(VEML7700_GAIN_1);
-    veml.setIntegrationTime(VEML7700_IT_800MS);
+    veml.setGain(VEML7700_GAIN_1_8) ; // set gain = 1/8
+    veml.setIntegrationTime(VEML7700_IT_25MS); // set 25ms exposure time
 //
 //    if (bootCount == 0 ){
 //      public_ip = getRequest("https://api.my-ip.io/ip");

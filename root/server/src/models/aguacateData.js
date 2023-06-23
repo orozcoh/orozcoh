@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const TIME_INTERVAL = 5 * 60 // Number of seconds in 5 min
+//const TIME_INTERVAL = 5 * 60 // Number of seconds in 5 min
 
 // Schema definition
 const aguacateDataSchema = new mongoose.Schema({
@@ -57,10 +57,7 @@ aguacateDataSchema.statics.getLastItem = async function () {
 aguacateDataSchema.statics.getOneItem = async function (timestamp) {
   try {
     const theItem = await this.findOne({
-      unix_time: {
-        $gte: timestamp - TIME_INTERVAL / 2,
-        $lt: timestamp + TIME_INTERVAL / 2
-      }
+      unix_time: timestamp
     }).exec()
     return theItem
   } catch (err) {
