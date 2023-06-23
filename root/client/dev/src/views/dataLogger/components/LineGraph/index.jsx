@@ -2,6 +2,32 @@ import PropTypes from "prop-types";
 import { ResponsiveLine } from "@nivo/line";
 import moment from "moment";
 
+const CustomTooltip = ({ point }) => {
+  return (
+    <div
+      style={{
+        background: "white",
+        padding: "9px 12px",
+        border: "1px solid #ccc",
+      }}
+      onClick={() => {
+        console.log("copying...");
+      }}
+    >
+      <div>
+        <b>unix_time:</b>
+        {moment(point.data.x).valueOf() / 1000}
+      </div>
+      <div>
+        <b>Date:</b> {moment(point.data.x).format("MMM DD, HH:mm:ss")}
+      </div>
+      <div>
+        <b>{point.serieId}</b>: {point.data.y}
+      </div>
+    </div>
+  );
+};
+
 export const LineGraph = ({ data }) => {
   var windowWidth =
     window.innerWidth ||
@@ -37,6 +63,7 @@ export const LineGraph = ({ data }) => {
       <div style={{ width: "100%", height: "400px" }}>
         <ResponsiveLine
           data={data}
+          tooltip={(point) => CustomTooltip(point)}
           enableGridX={true}
           enableGridY={true}
           //curve="monotoneX"
@@ -137,4 +164,8 @@ export const LineGraph = ({ data }) => {
 
 LineGraph.propTypes = {
   data: PropTypes.array,
+};
+
+CustomTooltip.propTypes = {
+  point: PropTypes.object,
 };

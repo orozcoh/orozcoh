@@ -130,13 +130,13 @@ export const Logger1 = ({ colorTheme }) => {
           }}
         >
           <div>
-            <h4 style={{ margin: "20px" }}>Last time updated:</h4>
+            <h4 style={{ margin: "20px 20px 20px 0px" }}>Last time updated:</h4>
             <pre>
               <code>{JSON.stringify(lastUpdate, null, 2)}</code>
             </pre>
           </div>
           <div>
-            <h4 style={{ margin: "20px" }}>Last item added:</h4>
+            <h4 style={{ margin: "20px 20px 20px 0px" }}>Last item added:</h4>
             <pre>
               <code>{prettyData}</code>
             </pre>
