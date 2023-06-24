@@ -26,6 +26,7 @@ float light = 0;
 // ------------------------------------------------------------------------------------------
 const char* SSID        = "__SSID__";
 const char* PASSWORD    = "__PASSWORD__";
+const String API_KEY    = "__API-KEY__";
 
 // local API
 const char* LOCAL_API   = "http://192.168.1.2:3000/dataLogger/aguacate";
@@ -37,7 +38,6 @@ const char* RASPBERRY_API   = "http://192.168.1.200:3000/dataLogger/aguacate";
 const char* CLOUD_API   = "http://api2.orozcoh.com/dataLogger/aguacate";
 
 const String DEVICE_ID  = "esp32-aguacate";
-const String API_KEY    = "__API-KEY__";
 // ------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------
 
@@ -86,8 +86,8 @@ void setup(){
     }
     Serial.println("VEML - Sensor found");
 
-    veml.setGain(VEML7700_GAIN_1_8) ; // set gain = 1/8
-    veml.setIntegrationTime(VEML7700_IT_25MS); // set 25ms exposure time
+    veml.setGain(VEML7700_GAIN_1_4) ; // set gain = 1/8
+    veml.setIntegrationTime(VEML7700_IT_200MS); // set 25ms exposure time
 //
 //    if (bootCount == 0 ){
 //      public_ip = getRequest("https://api.my-ip.io/ip");

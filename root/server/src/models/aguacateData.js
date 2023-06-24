@@ -112,6 +112,20 @@ aguacateDataSchema.statics.deleteItem = async function (timestamp) {
   }
 }
 
+aguacateDataSchema.statics.deleteItems = async function (unix_start, unix_end) {
+  try {
+    const itemArray = await this.deleteMany({
+      unix_time: {
+        $gte: unix_start,
+        $lt: unix_end + 1
+      }
+    }).exec()
+    return itemArray
+  } catch (err) {
+    throw 'Could not find items to delete'
+  }
+}
+
 // Model definition
 const aguacateData = mongoose.model('aguacateData', aguacateDataSchema)
 

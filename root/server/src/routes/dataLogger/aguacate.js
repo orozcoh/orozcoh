@@ -67,6 +67,17 @@ router
       .catch(() => res.status(500).send('Error while finding data'))
   })
 
+  .delete((req, res) => {
+    const unix_start = parseInt(req.query.startTime)
+    const unix_end = parseInt(req.query.endTime)
+    aguacateData
+      .deleteItems(unix_start, unix_end)
+      .then((delData) => res.send({ 'Deleted data': delData }))
+      .catch((error) => {
+        res.status(500).send(`Error deleting items: ${error}`)
+      })
+  })
+
 /**
  * ---------------------------- "/data/latest-timestamp" ------------------------
  *
