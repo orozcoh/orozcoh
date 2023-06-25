@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { Container, Navbar, Nav } from "react-bootstrap";
 import { DarkModeIcon } from "../DarkModeIcon";
+import { WalletIcon } from "../WalletIcon";
 
 export const Header = ({ colorTheme, setColorTheme }) => {
   return (
@@ -44,16 +45,7 @@ export const Header = ({ colorTheme, setColorTheme }) => {
             <Nav.Link href="/memory">Memory DB</Nav.Link>
             <Nav.Link href="/crypto">Crypto</Nav.Link>
             <Nav.Link href="">
-              <img
-                className=""
-                //style={{ marginLeft: "10px", marginRight: "10px" }}
-                alt="keplr_logo"
-                src="/icons/keplr_logo.png"
-                width="30"
-                height="30"
-                //className="d-inline-block align-top"
-                onClick={() => {}}
-              />
+              <WalletIcon />
             </Nav.Link>
             <Nav.Link href="">
               <DarkModeIcon setColorTheme={setColorTheme} />
