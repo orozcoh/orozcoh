@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@cosmjs/launchpad": "^0.27.1",
     "@nivo/line": "^0.83.0",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.0",
