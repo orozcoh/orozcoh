@@ -1,0 +1,22 @@
+.device-navbar-wrap {
+  .nav-link {
+    margin: 0px 11px 0px 11px !important;
+  }
+
+  .nav-link.active {
+    color: #97c93e !important;
+  }
+
+  .active-link {
+    color: #97c93e !important;
+  }
+
+  a {
+    margin: 0px 11px 0px 11px !important;
+    text-decoration: none;
+    color: white;
+    &:active {
+      color: #97c93e !important;
+    }
+  }
+}

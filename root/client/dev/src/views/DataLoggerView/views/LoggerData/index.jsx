@@ -2,16 +2,7 @@ import PropTypes from "prop-types";
 //import { useEffect, useRef } from "react";
 import axios from "axios";
 import moment from "moment";
-import { LoggerNavBar } from "../../components/LoggerNavBar";
-import { LineGraph } from "../../components/LineGraph";
-
-//import { dataLog } from "./data";
-
-//import { useEffect, useRef, useState } from "react";
-//import * as d3 from "d3";
-import { useEffect, useRef, useState } from "react";
-
-export default LineGraph;
+import { useEffect, useState } from "react";
 
 // ---------------------------- IP Endpoint config ------------------------------
 
@@ -21,11 +12,8 @@ const URL_ROOT = "api2.orozcoh.com"; //cloud production
 
 // -------------------------------------------------------------------------------
 
-export const Logger1 = ({ colorTheme }) => {
-  const dataReal = useRef([]);
+export const LoggerData = ({ deviceName }) => {
   //const [updateCount, setUpdateCount] = useState(0);
-  const [dataGraph, setDataGraph] = useState([]);
-  const [dataGraph2, setDataGraph2] = useState([]);
   const [lastItem, setLastItem] = useState(0);
   const [lastUpdate, setLastUpdate] = useState(0);
 
@@ -33,44 +21,15 @@ export const Logger1 = ({ colorTheme }) => {
     axios
       .get(`http://${URL_ROOT}/dataLogger/aguacate/data/last/3/days`)
       .then((response) => {
-        // Handle the response data
-        let data = [
-          {
-            id: "Light (Lux)",
-            //color: "hsl(352, 70%, 50%)",
-          },
-          {
-            id: "Temperature (ºC)",
-            //color: "rgb(250, 70, 250)",
-          },
-        ];
         setLastItem(response.data[response.data.length - 1]);
-        data[0].data = response.data.map((obj) => ({
-          x: new Date(parseInt(obj.unix_time) * 1000),
-          y: obj.light,
-        }));
-
-        //data[0].data = refData.current;
-
-        data[1].data = response.data.map((obj) => ({
-          x: new Date(parseInt(obj.unix_time) * 1000),
-          y: obj.temp,
-        }));
-        //data[1].data = tempRef.current;
-        dataReal.current = data;
-        setDataGraph([data[0]]);
-        setDataGraph2([data[1]]);
       })
       .catch((error) => {
-        // Handle any errors
         console.error("Error fetching data:", error);
       });
 
     axios
       .get(`http://${URL_ROOT}/dataLogger/aguacate/data/latest-timestamp`)
       .then((response) => {
-        // ---- Need to fix to time zone based on browser HARDCODED TO UTC -5 -------
-        //const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const tempDate = moment(response.data.date, "MMM DD, YYYY - HH:mm:ss")
           .subtract(5, "hour")
           .format("MMM DD, YY - HH:mm:ss");
@@ -79,7 +38,6 @@ export const Logger1 = ({ colorTheme }) => {
         setLastUpdate(dat);
       })
       .catch((error) => {
-        // Handle any errors
         console.error("Error fetching data:", error);
       });
   }, []); //[updateCount]);
@@ -93,7 +51,6 @@ export const Logger1 = ({ colorTheme }) => {
 
   return (
     <>
-      <LoggerNavBar colorTheme={colorTheme} />
       <div
         style={{
           display: "flex",
@@ -101,25 +58,6 @@ export const Logger1 = ({ colorTheme }) => {
           alignItems: "center",
         }}
       >
-        <div
-          style={{
-            marginTop: "20px",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <h2>Time vs Light</h2>
-        </div>
-        <LineGraph data={dataGraph} />
-
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <h2>Time vs Temperature</h2>
-        </div>
-        <LineGraph data={dataGraph2} />
-
-        {/*         <button onClick={() => setUpdateCount(updateCount + 1)}>
-          Update data
-        </button> */}
         <div
           style={{
             width: "100%",
@@ -147,10 +85,6 @@ export const Logger1 = ({ colorTheme }) => {
   );
 };
 
-LineGraph.propTypes = {
-  data: PropTypes.array,
-};
-
-Logger1.propTypes = {
+LoggerData.propTypes = {
   colorTheme: PropTypes.string,
 };
