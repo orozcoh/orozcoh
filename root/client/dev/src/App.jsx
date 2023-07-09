@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
-import { NotFound } from "./components/NotFound";
 
 import { Home } from "./views/home";
 //import { LoggerHome } from "./views/DataLoggerView/views/LoggerHome";
@@ -25,69 +24,114 @@ function App() {
         }}
       >
         <Header colorTheme={colorTheme} setColorTheme={setColorTheme} />
-        <Router>
-          <Routes>
-            <Route path="/" element={<Home />} />
+        <Routes>
+          <Route path="/" element={<Home />} />
 
-            {/* ------------------------------ dataLogger ----------------------------------- */}
+          {/* ------------------------------ dataLogger ----------------------------------- */}
+          <Route
+            path="dataLogger"
+            element={<DataLoggerView colorTheme={colorTheme} />}
+          >
             <Route
-              path="dataLogger"
-              element={<DataLoggerView colorTheme={colorTheme} />}
+              path="Logger_Dev"
+              element={
+                <DeviceNavBar
+                  colorTheme={colorTheme}
+                  deviceName={"Logger_Dev"}
+                />
+              }
             >
+              <Route path="about" element={<div>ABOUT</div>} />
               <Route
-                path="Logger_Dev"
-                element={<DeviceNavBar deviceName={"Logger_Dev"} />}
-              >
-                <Route path="about" element={<div>ABOUT</div>} />
-                <Route
-                  path="data"
-                  element={<LoggerData deviceName={"Logger_Dev"} />}
-                />
-                <Route path="graph" element={<div>GRAPH</div>} />
-                <Route
-                  path="graphs"
-                  element={<LoggerGraphs deviceName={"Logger_Dev"} />}
-                />
-              </Route>
+                path="data"
+                element={<LoggerData deviceName={"Logger_Dev"} />}
+              />
+              <Route path="graph" element={<div>GRAPH</div>} />
               <Route
-                path="Logger_Hass"
-                element={<DeviceNavBar deviceName={"Logger_Hass"} />}
-              >
-                <Route path="about" element={<div>ABOUT</div>} />
-                <Route
-                  path="data"
-                  element={<LoggerData deviceName={"Logger_Hass"} />}
-                />
-                <Route path="graph" element={<div>GRAPH</div>} />
-                <Route
-                  path="graphs"
-                  element={<LoggerGraphs deviceName={"Logger_Hass"} />}
-                />
-              </Route>
-              <Route
-                path="Logger_Avo"
-                element={<DeviceNavBar deviceName={"Logger_Avo"} />}
-              >
-                <Route path="about" element={<div>ABOUT</div>} />
-                <Route
-                  path="data"
-                  element={<LoggerData deviceName={"Logger_Avo"} />}
-                />
-                <Route path="graph" element={<div>GRAPH</div>} />
-                <Route
-                  path="graphs"
-                  element={<LoggerGraphs deviceName={"Logger_Avo"} />}
-                />
-              </Route>
-              <Route path="Admin" element={<div>ADMIN</div>} />
-              <Route path="*" element={<div>WHUuuT</div>} />
+                path="graphs"
+                element={<LoggerGraphs deviceName={"Logger_Dev"} />}
+              />
             </Route>
-            {/* ------------------------------ dataLogger ----------------------------------- */}
-
-            {/* Add other routes */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Router>
+            <Route
+              path="Logger_Hass"
+              element={
+                <DeviceNavBar
+                  colorTheme={colorTheme}
+                  deviceName={"Logger_Hass"}
+                />
+              }
+            >
+              <Route path="about" element={<div>ABOUT</div>} />
+              <Route
+                path="data"
+                element={<LoggerData deviceName={"Logger_Hass"} />}
+              />
+              <Route path="graph" element={<div>GRAPH</div>} />
+              <Route
+                path="graphs"
+                element={<LoggerGraphs deviceName={"Logger_Hass"} />}
+              />
+            </Route>
+            <Route
+              path="Logger_Avo"
+              element={
+                <DeviceNavBar
+                  colorTheme={colorTheme}
+                  deviceName={"Logger_Avo"}
+                />
+              }
+            >
+              <Route path="about" element={<div>ABOUT</div>} />
+              <Route
+                path="data"
+                element={<LoggerData deviceName={"Logger_Avo"} />}
+              />
+              <Route path="graph" element={<div>GRAPH</div>} />
+              <Route
+                path="graphs"
+                element={<LoggerGraphs deviceName={"Logger_Avo"} />}
+              />
+            </Route>
+            <Route path="Admin" element={<div>ADMIN</div>} />
+            <Route path="*" element={<div>WHUuuT</div>} />
+          </Route>
+          {/* ------------------------------ dataLogger ----------------------------------- */}
+          <Route
+            path="memory"
+            element={
+              <div
+                style={{
+                  minHeight: "88vh",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  fontSize: "66px",
+                  fontFamily: "fantasy",
+                }}
+              >
+                In progress...
+              </div>
+            }
+          />
+          {/* Add other routes */}
+          <Route
+            path="*"
+            element={
+              <div
+                style={{
+                  minHeight: "88vh",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  fontSize: "66px",
+                  fontFamily: "fantasy",
+                }}
+              >
+                In progress...
+              </div>
+            }
+          />
+        </Routes>
       </div>
       <Footer colorTheme={colorTheme} />
     </>
