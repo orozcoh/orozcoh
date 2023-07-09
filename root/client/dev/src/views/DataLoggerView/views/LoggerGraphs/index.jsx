@@ -1,4 +1,6 @@
 import PropTypes from "prop-types";
+import env from "../../../../global/var";
+
 import axios from "axios";
 import { LineGraph } from "../../components/LineGraph";
 import { useEffect, useRef, useState } from "react";
@@ -6,11 +8,7 @@ import { useEffect, useRef, useState } from "react";
 export default LineGraph;
 
 // ---------------------------- IP Endpoint config ------------------------------
-
-//const URL_ROOT = "192.168.1.200:3000"; // Local - Raspberry
-//const URL_ROOT = "192.168.1.2:3000"       // Local - PC
-const URL_ROOT = "api2.orozcoh.com"; //cloud production
-
+const API2_URL = env.API2_URL;
 // -------------------------------------------------------------------------------
 
 export const LoggerGraphs = ({ deviceName }) => {
@@ -22,7 +20,7 @@ export const LoggerGraphs = ({ deviceName }) => {
 
   useEffect(() => {
     axios
-      .get(`http://${URL_ROOT}/dataLogger/aguacate/data/last/3/days`)
+      .get(`http://${API2_URL}/dataLogger/${deviceName}/data/last/3/days`)
       .then((response) => {
         let data = [
           {

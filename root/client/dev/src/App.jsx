@@ -39,7 +39,6 @@ function App() {
                 element={<DeviceNavBar deviceName={"Logger_Dev"} />}
               >
                 <Route path="about" element={<div>ABOUT</div>} />
-                <Route path="api" element={<div>API</div>} />
                 <Route
                   path="data"
                   element={<LoggerData deviceName={"Logger_Dev"} />}
@@ -55,23 +54,33 @@ function App() {
                 element={<DeviceNavBar deviceName={"Logger_Hass"} />}
               >
                 <Route path="about" element={<div>ABOUT</div>} />
-                <Route path="api" element={<div>API</div>} />
-                <Route path="data" element={<div>DATA</div>} />
+                <Route
+                  path="data"
+                  element={<LoggerData deviceName={"Logger_Hass"} />}
+                />
                 <Route path="graph" element={<div>GRAPH</div>} />
-                <Route path="graphs" element={<div>GRAPHS</div>} />
+                <Route
+                  path="graphs"
+                  element={<LoggerGraphs deviceName={"Logger_Hass"} />}
+                />
               </Route>
               <Route
                 path="Logger_Avo"
                 element={<DeviceNavBar deviceName={"Logger_Avo"} />}
               >
                 <Route path="about" element={<div>ABOUT</div>} />
-                <Route path="api" element={<div>API</div>} />
-                <Route path="data" element={<div>DATA</div>} />
+                <Route
+                  path="data"
+                  element={<LoggerData deviceName={"Logger_Avo"} />}
+                />
                 <Route path="graph" element={<div>GRAPH</div>} />
-                <Route path="graphs" element={<div>GRAPHS</div>} />
+                <Route
+                  path="graphs"
+                  element={<LoggerGraphs deviceName={"Logger_Avo"} />}
+                />
               </Route>
               <Route path="Admin" element={<div>ADMIN</div>} />
-              <Route path="*" element={<div>WHUT</div>} />
+              <Route path="*" element={<div>WHUuuT</div>} />
             </Route>
             {/* ------------------------------ dataLogger ----------------------------------- */}
 
