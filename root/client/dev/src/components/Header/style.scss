@@ -1,10 +1,8 @@
-.SecondNavBar-wrap {
-  .nav-link {
-    margin: 0px 3px 0px 3px !important;
-  }
-
-  .nav-link.active {
+.oh-main-header {
+  .oh-header-logo {
     color: #97c93e !important;
+    font-size: 21px;
+    font-family: monospace;
   }
 
   .active-link {
@@ -12,7 +10,7 @@
   }
 
   a {
-    margin: 0px 11px 0px 11px !important;
+    margin: 5px 11px 5px 11px !important;
     text-decoration: none;
     color: white;
     &:active {

@@ -10,4 +10,4 @@
 
 # docker push devorozcoh/api2:0.0.1
 
-# docker run -d -p 80:80 --env-file .env <image>:<tag> -e "console.log(process.env)"
+# docker run -d -p 3000:3000 --env-file .env devorozcoh/api2:0.0.1

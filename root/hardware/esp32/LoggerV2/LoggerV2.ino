@@ -67,16 +67,16 @@ float light;
 const char* SSID        = "__SSID__";
 const char* PASSWORD    = "__PASSWORD__";
 const String API_KEY    = "__API_KEY___";
-const String DEVICE_ID  = "Logger-Hass";
+const String DEVICE_ID  = "Logger_Hass";
 
 // local API
-const char* LOCAL_API   = "http://192.168.1.2:3000/dataLogger/aguacate";
+const char* LOCAL_API   = "http://192.168.1.2:3000/dataLogger";
 
 // Raspberrry API
-const char* RASPBERRY_API   = "http://192.168.1.200:3000/dataLogger/aguacate";
+const char* RASPBERRY_API   = "http://192.168.1.200:3000/dataLogger";
 
 // cloud API
-const char* CLOUD_API   = "http://api2.orozcoh.com/dataLogger/aguacate";
+const char* CLOUD_API   = "http://api2.orozcoh.com/dataLogger";
 
 
 // ------------------------------------------------------------------------------------------

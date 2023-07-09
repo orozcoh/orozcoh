@@ -6,7 +6,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 mongoose.pluralize(null)
 
-const aguacateRouter = require('./routes/dataLogger/aguacate')
+const dataLoggerRouter = require('./routes/dataLogger')
 const rootRouter = require('./routes/root')
 
 console.log('Running server...')
@@ -36,6 +36,6 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 app.use('/', rootRouter)
-app.use('/dataLogger/aguacate', aguacateRouter)
+app.use('/dataLogger', dataLoggerRouter)
 
 app.listen(3000)

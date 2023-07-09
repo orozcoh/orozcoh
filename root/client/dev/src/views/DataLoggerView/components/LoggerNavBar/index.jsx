@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 import { Container, Navbar, Nav } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
 import "./style.scss";
 
 export const LoggerNavBar = ({ colorTheme, tabNum }) => {
@@ -8,15 +10,24 @@ export const LoggerNavBar = ({ colorTheme, tabNum }) => {
       <Navbar bg={colorTheme || "dark"} variant={colorTheme || "dark"}>
         <Container fluid className="justify-content-center">
           <Nav>
-            <Nav.Link active={tabNum === 1} href="/datalogger/Logger_Dev">
+            <Link
+              className={tabNum === 1 ? "active-link" : ""}
+              to="/datalogger/Logger_Dev"
+            >
               Logger_Dev
-            </Nav.Link>
-            <Nav.Link active={tabNum === 2} href="/datalogger/Logger_Hass">
+            </Link>
+            <Link
+              className={tabNum === 2 ? "active-link" : ""}
+              to="/datalogger/Logger_Hass"
+            >
               Logger_Hass
-            </Nav.Link>
-            <Nav.Link active={tabNum === 3} href="/datalogger/Logger_Avo">
+            </Link>
+            <Link
+              className={tabNum === 3 ? "active-link" : ""}
+              to="/datalogger/Logger_Avo"
+            >
               Logger_Avo
-            </Nav.Link>
+            </Link>
             <span
               style={{
                 color: "white",
@@ -26,9 +37,9 @@ export const LoggerNavBar = ({ colorTheme, tabNum }) => {
             >
               |
             </span>
-            <Nav.Link disabled href="#action3">
+            <Link disabled to="/datalogger/Admin">
               Admin
-            </Nav.Link>
+            </Link>
           </Nav>
         </Container>
       </Navbar>

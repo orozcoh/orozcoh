@@ -19,7 +19,6 @@ DataLoggerView.propTypes = {
 };
 
 const GetTabFromUrl = () => {
-  console.log("Checking tab");
   const location = useLocation();
   const pathName = location.pathname;
   if (pathName.startsWith("/datalogger/Logger_Dev")) {

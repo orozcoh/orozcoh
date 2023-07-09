@@ -1,41 +1,36 @@
 import PropTypes from "prop-types";
+import env from "../../../../global/var";
+//require("dotenv").config();
 //import { useEffect, useRef } from "react";
 import axios from "axios";
 import moment from "moment";
 import { useEffect, useState } from "react";
+import Spinner from "react-bootstrap/Spinner";
 
 // ---------------------------- IP Endpoint config ------------------------------
-
-//const URL_ROOT = "192.168.1.200:3000"; // Local - Raspberry
-//const URL_ROOT = "192.168.1.2:3000"       // Local - PC
-const URL_ROOT = "api2.orozcoh.com"; //cloud production
-
+const API2_URL = env.API2_URL;
 // -------------------------------------------------------------------------------
+
+const itemTemplate = {
+  _id: "--- WAITING FOR DATA ---",
+  device_name: "",
+  unix_time: 0,
+  light: 0,
+  temp: 0,
+  soil_humidity: 0,
+  air_humidity: 0,
+  __v: 0,
+};
 
 export const LoggerData = ({ deviceName }) => {
   //const [updateCount, setUpdateCount] = useState(0);
-  const [lastItem, setLastItem] = useState(0);
-  const [lastUpdate, setLastUpdate] = useState(0);
+  const [lastItem, setLastItem] = useState(itemTemplate);
 
   useEffect(() => {
     axios
-      .get(`http://${URL_ROOT}/dataLogger/aguacate/data/last/3/days`)
+      .get(`http://${API2_URL}/dataLogger/${deviceName}/data/last/3/days`)
       .then((response) => {
         setLastItem(response.data[response.data.length - 1]);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-
-    axios
-      .get(`http://${URL_ROOT}/dataLogger/aguacate/data/latest-timestamp`)
-      .then((response) => {
-        const tempDate = moment(response.data.date, "MMM DD, YYYY - HH:mm:ss")
-          .subtract(5, "hour")
-          .format("MMM DD, YY - HH:mm:ss");
-        let dat = response.data;
-        dat.date = tempDate;
-        setLastUpdate(dat);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -43,6 +38,15 @@ export const LoggerData = ({ deviceName }) => {
   }, []); //[updateCount]);
 
   const prettyData = JSON.stringify(lastItem, null, 2);
+
+  const lastTimeUpdated = moment(lastItem.unix_time * 1000).format(
+    "MMM DD, YYYY - HH:mm:ss"
+  );
+
+  const timeAgoMin = moment().diff(
+    moment(lastItem.unix_time * 1000),
+    "minutes"
+  );
 
   var windowWidth =
     window.innerWidth ||
@@ -64,16 +68,25 @@ export const LoggerData = ({ deviceName }) => {
             display: "flex",
             flexDirection: windowWidth > 600 ? "row" : "column",
             justifyContent: "space-evenly",
-            alignItems: "center",
+            alignItems: windowWidth < 600 ? "center" : "unset",
           }}
         >
-          <div>
+          <div style={{ minWidth: "305px" }}>
             <h4 style={{ margin: "20px 20px 20px 0px" }}>Last time updated:</h4>
-            <pre>
-              <code>{JSON.stringify(lastUpdate, null, 2)}</code>
-            </pre>
+            {timeAgoMin > 1000000 ? (
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <Spinner animation="border" />
+              </div>
+            ) : (
+              <pre>
+                <span>{lastTimeUpdated}</span>
+                <br />
+                <br />
+                <span>{timeAgoMin} min ago.</span>
+              </pre>
+            )}
           </div>
-          <div>
+          <div style={{ minWidth: "305px" }}>
             <h4 style={{ margin: "20px 20px 20px 0px" }}>Last item added:</h4>
             <pre>
               <code>{prettyData}</code>
@@ -87,4 +100,5 @@ export const LoggerData = ({ deviceName }) => {
 
 LoggerData.propTypes = {
   colorTheme: PropTypes.string,
+  deviceName: PropTypes.string,
 };

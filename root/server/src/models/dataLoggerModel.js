@@ -3,15 +3,14 @@ const mongoose = require('mongoose')
 //const TIME_INTERVAL = 5 * 60 // Number of seconds in 5 min
 
 // Schema definition
-const aguacateDataSchema = new mongoose.Schema({
+const dataLoggerDataSchema = new mongoose.Schema({
   device_name: {
     type: String,
     required: true
   },
   unix_time: {
     type: Number,
-    required: true,
-    unique: true
+    required: true
   },
   light: {
     type: Number,
@@ -31,7 +30,7 @@ const aguacateDataSchema = new mongoose.Schema({
   }
 })
 
-aguacateDataSchema.methods.postItem = async function () {
+dataLoggerDataSchema.methods.postItem = async function () {
   try {
     const newItem = await this.save()
     return newItem
@@ -45,18 +44,24 @@ aguacateDataSchema.methods.postItem = async function () {
   }
 }
 
-aguacateDataSchema.statics.getLastItem = async function () {
+dataLoggerDataSchema.statics.getLastItem = async function (deviceName) {
   try {
-    const newItem = await this.findOne().sort({ _id: -1 }).exec()
+    const newItem = await this.findOne({ device_name: deviceName }).sort({
+      _id: -1
+    })
     return newItem
   } catch (err) {
     throw 'Could not find item'
   }
 }
 
-aguacateDataSchema.statics.getOneItem = async function (timestamp) {
+dataLoggerDataSchema.statics.getOneItem = async function (
+  deviceName,
+  timestamp
+) {
   try {
     const theItem = await this.findOne({
+      device_name: deviceName,
       unix_time: timestamp
     }).exec()
     return theItem
@@ -65,12 +70,14 @@ aguacateDataSchema.statics.getOneItem = async function (timestamp) {
   }
 }
 
-aguacateDataSchema.statics.getRangeOfItems = async function (
+dataLoggerDataSchema.statics.getRangeOfItems = async function (
+  deviceName,
   startTime,
   endTime
 ) {
   try {
     const itemArray = await this.find({
+      device_name: deviceName,
       unix_time: {
         $gte: startTime,
         $lt: endTime + 1
@@ -82,13 +89,14 @@ aguacateDataSchema.statics.getRangeOfItems = async function (
   }
 }
 
-aguacateDataSchema.statics.updateOneItem = async function (
+dataLoggerDataSchema.statics.updateOneItem = async function (
+  deviceName,
   timestamp,
   updateData
 ) {
   try {
     const theItem = await this.findOneAndUpdate(
-      { unix_time: timestamp },
+      { device_name: deviceName, unix_time: timestamp },
       updateData,
       {
         new: true,
@@ -101,9 +109,13 @@ aguacateDataSchema.statics.updateOneItem = async function (
   }
 }
 
-aguacateDataSchema.statics.deleteItem = async function (timestamp) {
+dataLoggerDataSchema.statics.deleteItem = async function (
+  deviceName,
+  timestamp
+) {
   try {
     const deletedItem = await this.findOneAndDelete({
+      device_name: deviceName,
       unix_time: timestamp
     }).exec()
     return deletedItem
@@ -112,9 +124,14 @@ aguacateDataSchema.statics.deleteItem = async function (timestamp) {
   }
 }
 
-aguacateDataSchema.statics.deleteItems = async function (unix_start, unix_end) {
+dataLoggerDataSchema.statics.deleteItems = async function (
+  deviceName,
+  unix_start,
+  unix_end
+) {
   try {
     const itemArray = await this.deleteMany({
+      device_name: deviceName,
       unix_time: {
         $gte: unix_start,
         $lt: unix_end + 1
@@ -127,6 +144,6 @@ aguacateDataSchema.statics.deleteItems = async function (unix_start, unix_end) {
 }
 
 // Model definition
-const aguacateData = mongoose.model('aguacateData', aguacateDataSchema)
+const dataLoggerData = mongoose.model('IoT', dataLoggerDataSchema)
 
-module.exports = aguacateData
+module.exports = dataLoggerData

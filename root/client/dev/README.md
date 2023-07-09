@@ -1,13 +1,19 @@
-# docker build -t <image>:<tag> .
+### **_1- Build react project with vite_**
 
-# -----> docker build -t devorozcoh/dev-front:0.0.1 .
+- npm run build
 
-# BUILD FOR X_86
+### **_2- Build Docker image_**
 
-# -----> docker buildx build --platform linux/amd64 -t <image>:<tag> .
+- docker build -t devorozcoh/dev-front:0.0.1 . <!-- <image>:<tag> -->
 
-# -----> docker buildx build --platform linux/amd64 -t devorozcoh/dev-front:0.0.1 .
+### **_2.1- BUILD FOR X_86_**
 
-# docker push devorozcoh/dev-front:0.0.1
+- docker buildx build --platform linux/amd64 -t devorozcoh/dev-front:0.0.1 .
 
-# docker run -d -p 80:80 --env-file .env <image>:<tag> -e "console.log(process.env)"
+### **_3- Run Docker image as container_**
+
+- docker run -d -p 80:80 devorozcoh/dev-front:0.0.7
+
+### **_4- Push docker image to dockerHub_**
+
+- docker push devorozcoh/dev-front:0.0.1

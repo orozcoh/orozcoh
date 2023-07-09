@@ -5,33 +5,37 @@ export const DarkModeIcon = ({ setColorTheme }) => {
   const [theme, setTheme] = useState("dark");
 
   return theme === "dark" ? (
-    <span
-      className="material-icons"
-      style={{ color: "white", cursor: "pointer" }}
-      onClick={() => {
-        const newTheme = theme === "dark" ? "light" : "dark";
-        setTheme(newTheme);
-        if (setColorTheme) {
-          setColorTheme(newTheme);
-        }
-      }}
-    >
-      dark_mode
-    </span>
+    <div style={{ width: "30", height: "30" }}>
+      <span
+        className="material-icons"
+        style={{ color: "white", cursor: "pointer" }}
+        onClick={() => {
+          const newTheme = theme === "dark" ? "light" : "dark";
+          setTheme(newTheme);
+          if (setColorTheme) {
+            setColorTheme(newTheme);
+          }
+        }}
+      >
+        dark_mode
+      </span>
+    </div>
   ) : (
-    <span
-      className="material-icons"
-      style={{ color: "black", cursor: "pointer" }}
-      onClick={() => {
-        const newTheme = theme === "dark" ? "light" : "dark";
-        setTheme(newTheme);
-        if (setColorTheme) {
-          setColorTheme(newTheme);
-        }
-      }}
-    >
-      light_mode
-    </span>
+    <div style={{ width: "30", height: "30" }}>
+      <span
+        className="material-icons"
+        style={{ color: "black", cursor: "pointer" }}
+        onClick={() => {
+          const newTheme = theme === "dark" ? "light" : "dark";
+          setTheme(newTheme);
+          if (setColorTheme) {
+            setColorTheme(newTheme);
+          }
+        }}
+      >
+        light_mode
+      </span>
+    </div>
   );
 };
 
